@@ -13,7 +13,6 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import javax.annotation.PostConstruct;
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -39,7 +38,6 @@ public class Admin {
 
     @GetMapping("/user")
     public String getUserById(Principal principal, Model model) {
-
         model.addAttribute("user", userService.getUsernameByName(principal.getName()));
         model.addAttribute("principal", userService.loadUserByUsername(principal.getName()));
         return "user";
@@ -48,36 +46,22 @@ public class Admin {
 
     @PostMapping("admin/user/new")
     public String addUser(@ModelAttribute("user") User user, @RequestParam("newUserRoles") String[] roles) {
-        try {
-            Set<Role> roleSet = Arrays.stream(roles)
-                    .map(roleService::getRoleByName)
-                    .collect(Collectors.toSet());
-            user.setRoles(roleSet);
-            userService.saveUser(user);
-        } catch (Exception e) {
-            //ignored
-        }
+        userService.getSetRole(user, roles);
+        userService.saveUser(user);
         return "redirect:/admin";
     }
 
 
     @PatchMapping("/admin/user/edit")
     public String editUser(@ModelAttribute("user") User user, @RequestParam("allRoles[]") String[] roles) {
-        try {
-            Set<Role> roleSet = Arrays.stream(roles)
-                    .map(roleService::getRoleByName)
-                    .collect(Collectors.toSet());
-            user.setRoles(roleSet);
-            userService.updateUser(user);
-        } catch (Exception e) {
-            //ignored
-        }
+        userService.getSetRole(user, roles);
+        userService.updateUser(user);
         return "redirect:/admin";
     }
 
     @DeleteMapping("admin/user/{id}")
     public String deleteUser(@PathVariable("id") long id) {
-        userService.deleteById(id);
+        userService.deleteUserById(id);
         return "redirect:/admin";
     }
 

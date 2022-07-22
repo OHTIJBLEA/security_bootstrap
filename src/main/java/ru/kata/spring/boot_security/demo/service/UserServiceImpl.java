@@ -13,23 +13,24 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository userRepository;
-    public User findById(Long id) {
-        return userRepository.getOne(id);
-    }
+    private final RoleService roleService;
 
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
 
-    public void deleteById(Long id) {
+    public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
 
@@ -84,5 +85,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
         return true;
+    }
+
+    @Override
+    public Set<Role> getSetRole(User user, String[] roles) {
+        Set<Role> roleSet = Arrays.stream(roles)
+                .map(roleService::getRoleByName)
+                .collect(Collectors.toSet());
+        user.setRoles(roleSet);
+        return roleSet;
     }
 }
