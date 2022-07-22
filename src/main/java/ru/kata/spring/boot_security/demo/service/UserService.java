@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserService {
-    List<User> findAll();
+    List<User> findAllUsers();
     void deleteUserById(Long id);
     UserDetails loadUserByUsername(String username);
     User findUserById(Long userId);

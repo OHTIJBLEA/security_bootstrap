@@ -158,7 +158,6 @@
                                                             data-bs-dismiss="modal">
                                                         Close
                                                     </button>
-                                                    <!--                                                        <button type="submit" class="btn btn-primary" form="editForm">Edit</button>-->
                                                     <input type="submit" value="Edit" class="btn btn-primary"
                                                            th:attr="form='editForm' + ${user.getId()}">
                                                 </div>
@@ -291,7 +290,7 @@
                                             th:text="${role.getShortRole()}">roles
                                     </option>
                                 </select>
-
+                                <br>
                                 <input class="btn btn-success mt-3" type="submit" value="Add new user">
                             </form>
                         </div>

@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private final RoleService roleService;
     private final RoleRepository roleRepository;
 
-    public List<User> findAll() {
+    public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 

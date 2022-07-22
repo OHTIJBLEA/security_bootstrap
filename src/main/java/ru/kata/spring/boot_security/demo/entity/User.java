@@ -17,7 +17,7 @@ public class User implements UserDetails {
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(unique = true)
     private String username;
     @Column
     private String firstName;
@@ -27,7 +27,6 @@ public class User implements UserDetails {
     private byte age;
     @Column
     private String password;
-
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
