@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final RoleRepository roleRepository;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -94,5 +95,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .collect(Collectors.toSet());
         user.setRoles(roleSet);
         return roleSet;
+    }
+
+    @PostConstruct
+    public void addTestUsers() {
+        roleRepository.save(new Role(1L, "ROLE_ADMIN"));
+        roleRepository.save(new Role(2L, "ROLE_USER"));
+        User newAdmin = new User("admin", "admin", "admin", (byte) 18, "admin", roleService.getListRoleByName(new String[]{"ROLE_ADMIN"}));
+        User newUser = new User("user", "user", "user", (byte) 18, "user", roleService.getListRoleByName(new String[]{"ROLE_USER"}));
+        saveUserTest(newAdmin);
+        saveUserTest(newUser);
     }
 }

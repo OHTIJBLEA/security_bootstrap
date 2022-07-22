@@ -4,22 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import javax.annotation.PostConstruct;
 import java.security.Principal;
-import java.util.*;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 public class Admin {
     private final RoleService roleService;
     private final UserService userService;
-    private final RoleRepository roleRepository;
 
     @GetMapping("/login")
     public String getLogin() {
@@ -63,15 +59,5 @@ public class Admin {
     public String deleteUser(@PathVariable("id") long id) {
         userService.deleteUserById(id);
         return "redirect:/admin";
-    }
-
-    @PostConstruct
-    public void addTestUsers() {
-        roleRepository.save(new Role(1L, "ROLE_ADMIN"));
-        roleRepository.save(new Role(2L, "ROLE_USER"));
-        User newAdmin = new User("admin", "admin", "admin", (byte) 18, "admin", roleService.getListRoleByName(new String[]{"ROLE_ADMIN"}));
-        userService.saveUserTest(newAdmin);
-        User newUser = new User("user", "user", "user", (byte) 18, "user", roleService.getListRoleByName(new String[]{"ROLE_USER"}));
-        userService.saveUserTest(newUser);
     }
 }

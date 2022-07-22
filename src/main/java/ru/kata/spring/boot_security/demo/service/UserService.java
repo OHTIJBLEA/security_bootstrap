@@ -17,4 +17,5 @@ public interface UserService {
     Long getUsernameByName(String name);
     boolean saveUserTest(User user);
     Set<Role> getSetRole(User user, String[] roles);
+    void addTestUsers();
 }
