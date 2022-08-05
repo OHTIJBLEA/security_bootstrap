@@ -23,12 +23,12 @@ public class Admin {
     }
 
     @GetMapping(value = "/admin")
-    public String listUsers(Principal principal, Model model) {
+    public String getListUsers(Principal principal, Model model) {
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
         model.addAttribute("principal", userService.loadUserByUsername(principal.getName()));
         model.addAttribute("newUser", new User());
-        model.addAttribute("allRoles", roleService.gelAllRoles());
+        model.addAttribute("allRoles", roleService.getAllRoles());
         return "admin";
     }
 
@@ -38,7 +38,6 @@ public class Admin {
         model.addAttribute("principal", userService.loadUserByUsername(principal.getName()));
         return "user";
     }
-
 
     @PostMapping("admin/user/new")
     public String addUser(@ModelAttribute("user") User user, @RequestParam("newUserRoles") String[] roles) {
